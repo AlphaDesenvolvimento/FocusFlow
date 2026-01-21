@@ -760,10 +760,20 @@ body.light-mode .focus-card {
 }
 
 #filter-pills-ideias {
-    margin-bottom: 0;
     display: flex;
     flex-wrap: nowrap;
     overflow-x: auto;
+    gap: 10px;
+    padding: 10px 0;
+    
+    /* Esconde a barra de rolagem mas mantém a função de scroll */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    -webkit-overflow-scrolling: touch; /* Scroll suave no celular */
+}
+
+#filter-pills-ideias::-webkit-scrollbar {
+    display: none; /* Chrome, Safari e Opera */
 }
 
 .filter-label {
@@ -872,6 +882,47 @@ body.light-mode .focus-card {
 .idea-card:hover .btn-delete {
     opacity: 1;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Container da busca para dar o respiro correto entre os elementos */
+.search-container {
+    margin: 10px 0 20px 0;
+}
+
+/* Grupo relativo para posicionar o ícone de lupa dentro do input */
+.input-group-search {
+    position: relative;
+    width: 100%;
+}
+
+/* Estilização do Campo de Entrada */
+.input-group-search input {
+    width: 100%;
+    padding: 12px 15px 12px 45px; /* Espaço extra na esquerda para o ícone */
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background: var(--card-bg);
+    color: var(--text-main);
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+/* Efeito de destaque ao clicar na busca */
+.input-group-search input:focus {
+    border-color: var(--accent-blue);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1); /* Brilho suave */
+}
+
+/* Posicionamento do ícone de lupa */
+.search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+    opacity: 0.5;
+    pointer-events: none; /* Garante que o clique passe para o input */
 }
 
 /* ============================================================
@@ -1357,7 +1408,8 @@ body.light-mode .day-card {
 
     .nav-item.active {
         background: rgba(59, 130, 246, 0.1);
-        border-bottom: 3px solid var(--accent-blue);
+        border-bottom: 5px solid var(--accent-blue);
+        border-left: none;
     }
 
     .nav-item .icon {
@@ -1371,8 +1423,8 @@ body.light-mode .day-card {
     /* 3. Botão de Tema Flutuante (Somente na Home) */
     .theme-toggle-mobile-btn {
         position: fixed;
-        top: 15px;
-        right: 15px;
+        top: 25px;
+        right: 30px;
         z-index: 1001;
         background: var(--accent-blue);
         color: white;
@@ -1429,9 +1481,10 @@ body.light-mode .day-card {
     }
 
     .filter-bar-ideias {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
+        width: 100%;
+        overflow: hidden; /* Garante que o scroll não vaze do container */
+        border-bottom: 1px solid var(--border);
+        margin: 20px 0;
     }
 
     /* 6. Ajustes Gerais */
@@ -1440,7 +1493,7 @@ body.light-mode .day-card {
     }
 
     button, .btn-details-task {
-        min-height: 44px; /* Otimizado para o dedo */
+        min-height: 35px; /* Otimizado para o dedo */
     }
 }
 

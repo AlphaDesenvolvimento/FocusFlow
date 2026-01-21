@@ -179,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. SEÇÃO DE IDEIAS (COM AJUSTE DO ENTER)
     // ==========================================
     const ideaInput = document.getElementById('idea-input');
+    const searchIdeaInput = document.getElementById('search-idea-input');
 
     function renderThemesIdeas() {
         const container = document.getElementById('category-pills');
@@ -233,8 +234,19 @@ document.addEventListener('DOMContentLoaded', () => {
         const container = document.getElementById('ideas-list');
         if (!container) return;
         container.innerHTML = '';
+
         const ideas = JSON.parse(localStorage.getItem('focus_flow_ideas')) || [];
-        const filtered = ideas.filter(i => currentFilterIdea === "Todos" || i.category === currentFilterIdea);
+
+        // Captura o termo de busca em letras minúsculas para não diferenciar maiúsculas
+        const searchTerm = searchIdeaInput ? searchIdeaInput.value.toLowerCase() : "";
+
+        // FILTRO DUPLO: Categoria + Termo de Busca
+        const filtered = ideas.filter(idea => {
+            const matchesCategory = currentFilterIdea === "Todos" || idea.category === currentFilterIdea;
+            const matchesSearch = idea.content.toLowerCase().includes(searchTerm);
+        
+            return matchesCategory && matchesSearch;
+        });
         
         filtered.slice().reverse().forEach(idea => {
             const themeData = themes.find(t => t.name === idea.category) || {color: "#94a3b8"};
@@ -267,6 +279,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('btn-capture')?.addEventListener('click', captureIdea);
     ideaInput?.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); captureIdea(); } });
+    
+    // Faz a lista atualizar automaticamente a cada letra digitada
+    searchIdeaInput?.addEventListener('input', renderIdeasList);
 
     // ==========================================
     // 6. SEÇÃO DE TAREFAS (VALIDAÇÃO E ADIÇÃO)
@@ -631,6 +646,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 9. INICIALIZAÇÃO
     // ==========================================
+
     renderThemesIdeas(); 
     renderFiltersIdeas(); 
     renderIdeasList();
@@ -639,4 +655,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateDashboard();
     renderCalendar(); 
     setupCalendarEvents();
+
 });
