@@ -96,7 +96,7 @@
         <div id="today-tasks-list" class="tasks-container">
             </div>
     </div>
-</section>
+            </section>
 
             <section id="view-ideias" class="view">
                 <header class="view-header flex-header">
@@ -124,9 +124,16 @@
                     </div>
                 </div>
 
-                <div class="filter-bar-ideias">
-                    <span class="filter-label">🔍 Filtros:</span>
-                    <div id="filter-pills-ideias" class="pill-container"></div>
+                <div class="filter-wrapper">
+                    <div class="filter-bar-ideias">
+                        <span class="filter-label">🔍 Filtros:</span>
+                        <div id="filter-pills-ideias">
+                        </div>
+                    </div>
+
+                    <button id="btn-filter-favorites" class="btn-fav-filter" title="Ver Favoritos">
+                        <span class="star-icon">★</span>
+                    </button>
                 </div>
 
                 <div id="ideas-list" class="ideas-container"></div>
@@ -272,6 +279,41 @@
         </div>
     </div>
 
+    <div id="modal-transform-container" class="modal-container">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3>Converter em Tarefa</h3>
+            <button id="close-transform-modal" class="btn-close">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <div class="input-group">
+                <label>Prazo (DD/MM)</label>
+                <input type="text" id="transform-date" placeholder="Ex: 21/01" maxlength="5">
+            </div>
+
+            <div class="input-group">
+                <label>Prioridade</label>
+                <div class="priority-selection" id="transform-priority-group">
+                    <button class="priority-btn-modal low active" data-priority="Baixa">Baixa</button>
+                    <button class="priority-btn-modal medium" data-priority="Média">Média</button>
+                    <button class="priority-btn-modal high" data-priority="Alta">Alta</button>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>Descrição / Observações</label>
+                <textarea id="transform-desc" rows="3"></textarea>
+            </div>
+        </div>
+
+        <div class="modal-footer">
+            <button id="btn-cancel-transform" class="btn-secondary">Cancelar</button>
+            <button id="btn-confirm-transform" class="btn-primary">Criar Tarefa</button>
+        </div>
+    </div>
+    </div>
+
     <div id="modal-details-container" class="modal-overlay">
         <div class="modal-content">
             <header class="modal-header">
@@ -337,5 +379,6 @@
     </div>
 
     <script src="JS/script.js"></script>
+
 </body>
 </html>

@@ -219,6 +219,17 @@ input, select {
     margin-bottom: 15px; 
 }
 
+/* .btn-primary {
+    background: var(--accent-blue);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: opacity 0.2s;
+} */
+
 /* Gradiente linear do Azul (#3b82f6) para o Verde (#10b981) */
 .btn-primary {
     background: linear-gradient(90deg, #3b82f6 0%, #10b981 100%);
@@ -227,18 +238,22 @@ input, select {
     padding: 10px 24px;
     border-radius: 8px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: bold;
     font-size: 0.95rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px; /* Espaço entre o + e o texto */ 
+    gap: 8px; 
     transition: transform 0.2s ease, filter 0.2s ease;
 }
 
+/* .btn-primary:hover {
+    filter: brightness(1.1); 
+    transform: translateY(-1px); 
+} */
+
 .btn-primary:hover {
-    filter: brightness(1.1); /* Dá um leve brilho ao passar o mouse */
-    transform: translateY(-1px); /* Sobe levemente o botão */
+    opacity: 0.9;
 }
 
 .btn-primary:active {
@@ -277,12 +292,18 @@ input, select {
 }
 
 .btn-secondary {
-    background: var(--card-bg);
+    background: transparent;
     border: 1px solid var(--border-color);
-    color: white;
-    padding: 8px 16px;
-    border-radius: 6px;
+    color: var(--text-muted);
+    padding: 10px 20px;
+    border-radius: 8px;
     cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
 }
 
 .btn-delete-task {
@@ -561,6 +582,60 @@ input, select {
     line-height: 1.4;
 }
 
+/* Container do Modal de Conversão */
+#modal-transform-container {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo escurecido */
+    z-index: 1100;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(4px); /* Efeito de desfoque no fundo */
+}
+
+/* Correção do Fundo e Layout do Modal */
+#modal-transform-container .modal-box {
+    background-color: var(--card-bg); /* O mesmo fundo dos seus outros modais */
+    border: 1px solid var(--border-color);
+    padding: 25px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 450px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* Quando o modal está ativo */
+#modal-transform-container.active {
+    display: flex;
+}
+
+/* Estilização dos botões de prioridade dentro do modal */
+.priority-selection {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.priority-btn-modal {
+    flex: 1;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+}
+
+.priority-btn-modal.active.low { background: rgba(59, 130, 246, 0.2); color: var(--accent-blue); border-color: var(--accent-blue); }
+.priority-btn-modal.active.medium { background: rgba(245, 158, 11, 0.2); color: #f59e0b; border-color: #f59e0b; }
+.priority-btn-modal.active.high { background: rgba(239, 68, 68, 0.2); color: var(--accent-red); border-color: var(--accent-red); }
+
 
 
 /* ============================================================
@@ -754,7 +829,7 @@ body.light-mode .focus-card {
     display: flex;
     align-items: center;
     gap: 15px;
-    margin: 25px 0 10px 0;
+    margin-top: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid var(--border);
 }
@@ -820,15 +895,6 @@ body.light-mode .focus-card {
     opacity: 1;
 }
 
-/* Container das Ideias */
-
-.ideas-container {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
 /* O card da ideia individual */
 
 .idea-card {
@@ -842,14 +908,13 @@ body.light-mode .focus-card {
     transition: transform 0.2s, box-shadow 0.2s;
 }
 
+/* Garante a separação entre o tema e as ações */
 .idea-header {
     display: flex;
-    gap: 10px;
+    justify-content: space-between; /* Empurra os elementos para as extremidades */
     align-items: center;
-    margin-bottom: 8px;
-    font-size: 0.75rem;
-    font-weight: bold;
-    text-transform: uppercase;
+    width: 100%;
+    margin-bottom: 12px;
 }
 
 /* Estilo da "Pílula" roxa da categoria */
@@ -886,7 +951,7 @@ body.light-mode .focus-card {
 
 /* Container da busca para dar o respiro correto entre os elementos */
 .search-container {
-    margin: 10px 0 20px 0;
+    margin: 10px 0 10px 0;
 }
 
 /* Grupo relativo para posicionar o ícone de lupa dentro do input */
@@ -925,6 +990,174 @@ body.light-mode .focus-card {
     pointer-events: none; /* Garante que o clique passe para o input */
 }
 
+/* Container que agrupa a data e o botão de seta */
+.idea-actions-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative; /* Mantém o menu dropdown ancorado aqui */
+}
+
+/* Estilo do botão da seta */
+.btn-dropdown-toggle {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+}
+
+.btn-dropdown-toggle:hover {
+    color: var(--text-main);
+    transform: scale(1.2);
+}
+
+/* A caixa do menu flutuante */
+.dropdown-menu {
+    display: none; /* Escondido por padrão */
+    position: absolute;
+    top: 100%;    /* Posiciona logo abaixo do botão */
+    right: 0;     /* Alinha à direita do container */
+    background-color: var(--bg-dark); 
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    min-width: 180px;
+    flex-direction: column;
+    overflow: hidden;
+    margin-top: 5px;
+}
+
+/* Classe que o JS vai adicionar para mostrar o menu */
+.dropdown-menu.show {
+    display: flex;
+}
+
+/* Estilo de cada item (botão) dentro do menu */
+.dropdown-item {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Cor específica para o botão de apagar para evitar erros */
+.btn-delete-option {
+    color: #ff4d4d;
+    border-top: 1px solid var(--border-color); /* Linha divisória para segurança */
+}
+
+.btn-delete-option:hover {
+    background-color: rgba(255, 77, 77, 0.1);
+}
+
+/* Container para alinhar filtros e botão na mesma linha */
+.filter-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Empurra o botão para a direita */
+    gap: 15px;
+}
+
+/* Estilo da caixa do botão de favorito */
+.btn-fav-filter {
+    background-color: var(--card-bg); /* Fundo igual aos cards */
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0; /* Impede que o botão amasse em telas menores */
+}
+
+/* A estrela apagada (padrão) */
+.star-icon {
+    font-size: 1.4rem;
+    color: var(--text-muted); /* Cor cinza/opaca */
+    transition: color 0.3s ease, transform 0.2s ease;
+    padding-bottom: 2px;
+}
+
+/* Efeito ao passar o mouse (Hover) */
+.btn-fav-filter:hover {
+    border-color: #facc15; /* Cor de destaque (amarelo) na borda */
+    background-color: rgba(250, 204, 21, 0.05); /* Um brilho sutil no fundo */
+}
+
+.btn-fav-filter:hover .star-icon {
+    color: #facc15; /* Estrela fica amarela */
+    transform: scale(1.1); /* Leve aumento para dar feedback visual */
+}
+
+/* Classe para quando o filtro estiver ATIVO (clicado) */
+.btn-fav-filter.active {
+    background-color: rgba(250, 204, 21, 0.15);
+    border-color: #facc15;
+}
+
+.btn-fav-filter.active .star-icon {
+    color: #facc15;
+}
+
+.idea-link {
+    color: var(--accent-blue);
+    text-decoration: underline;
+    word-break: break-all; /* Impede que links longos quebrem o layout do card */
+    transition: opacity 0.2s;
+}
+
+.idea-link:hover {
+    opacity: 0.8;
+}
+
+/* Estilo especial para cards favoritados */
+.idea-card.favorite {
+    border: 1px solid #facc15; /* Borda dourada/amarela */
+    background-color: rgba(250, 204, 21, 0.03); /* Fundo com um tom amarelado quase imperceptível */
+    box-shadow: 0 4px 15px rgba(250, 204, 21, 0.1); /* Brilho suave ao redor do card */
+    position: relative;
+}
+
+/* Opcional: Uma pequena estrela flutuante no canto para reforçar o destaque */
+.idea-card.favorite::before {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background: #facc15;
+    color: #1e1e1e;
+    font-size: 0.7rem;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 10;
+}
+
 /* ============================================================
    7. GERENCIADOR DE TAREFAS
 ============================================================ */
@@ -935,7 +1168,8 @@ body.light-mode .focus-card {
 }
 
 .ideas-container {
-    margin-top: 25px;
+    border-top: 2px solid var(--border-color);
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -1312,13 +1546,50 @@ body.light-mode .day-card {
     color: #fff;
 }
 
+/* Ajustes específicos para o corpo do modal */
+.modal-body .input-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.modal-body label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.modal-body input, 
+.modal-body textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.modal-body textarea {
+    resize: none; /* Impede que o usuário deforme o modal */
+    font-family: inherit;
+}
+
 /* Alinhamento dos botões no rodapé do modal */
 
 .modal-footer {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-    margin-top: 25px;
+    margin-top: 15px;
+}
+
+.modal-body input:focus, 
+.modal-body textarea:focus {
+    border-color: var(--accent-blue);
+    outline: none;
 }
 
 /* ============================================================
@@ -1347,6 +1618,58 @@ body.light-mode .day-card {
 
 .nav-item {
     transition: background-color 0.3s ease, color 0.3s ease, border-left 0.2s ease;
+}
+
+/* --- Animação de Destaque para Favoritos --- */
+
+/* Define o movimento de "pulsar" */
+@keyframes favorite-pulse {
+    0%, 100% {
+        /* Estado inicial e final: brilho suave */
+        box-shadow: 0 4px 15px rgba(250, 204, 21, 0.1);
+        border-color: #facc15; 
+    }
+    50% {
+        /* Meio da animação: brilho mais intenso e expansivo */
+        box-shadow: 0 8px 25px rgba(250, 204, 21, 0.35);
+        border-color: #fde047; /* Borda ligeiramente mais clara para dar "luz" */
+    }
+}
+
+
+/* Estilo especial para cards favoritados */
+.idea-card.favorite {
+    /* Base do estilo (caso a animação não rode) */
+    border: 1px solid #facc15;
+    background-color: rgba(250, 204, 21, 0.03); /* Fundo amarelado muito sutil */
+    position: relative;
+    
+    /* Aplicação da Animação */
+    /* Nome | Duração | Curva de Velocidade | Repetição */
+    animation: favorite-pulse 3s ease-in-out infinite;
+    
+    /* Otimização de performance para animações */
+    will-change: box-shadow, border-color;
+}
+
+/* A pequena estrela flutuante no canto (opcional, mas recomendada) */
+.idea-card.favorite::before {
+    content: '★';
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    background: #facc15;
+    color: #1e1e1e; /* Cor escura para contraste */
+    font-size: 0.7rem;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 2; /* Garante que fique acima do conteúdo */
 }
 
 /* ============================================================
@@ -1494,6 +1817,14 @@ body.light-mode .day-card {
 
     button, .btn-details-task {
         min-height: 35px; /* Otimizado para o dedo */
+    }
+
+    .btn-fav-filter {
+        margin-bottom: 10px;
+    }
+
+    .star-icon {
+        padding-bottom: 3px;
     }
 }
 
